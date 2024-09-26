@@ -1,0 +1,49 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+
+contract PokeTok is ERC721{
+
+    struct Pokemon{
+        string name;
+        uint level;
+        string img;
+    }
+
+    Pokemon[] public poke;
+    address public gameOwner;
+
+    constructor () ERC721 ("PokeTok", "PKT"){
+
+        gameOwner = msg.sender;
+
+    } 
+
+    modifier onlyOwnerOf(uint _monsterId) {
+
+        require(ownerOf(_monsterId) == msg.sender,"Apenas o dono usar este Pokemon");
+        _;
+
+    }
+
+    function battle(uint _attackPokemon, uint _defensePokemon) public onlyOwnerOf(_attackPokemon){
+        Pokemon storage attacker = poke[_attackPokemon];
+        Pokemon storage defender = poke[_defensePokemon];
+
+         if (attacker.level >= defender.level) {
+            attacker.level += 2;
+            defender.level += 1;
+        }else{
+            attacker.level += 1;
+            defender.level += 2;
+        }
+    }
+
+    function createNewPokemon(string memory _name, address _to, string memory _img) public {
+        require(msg.sender == gameOwner, "Apenas o dono pode criar novos Pokemons");
+        uint id = poke.length;
+        poke.push(Pokemon(_name, 1,_img));
+        _safeMint(_to, id);
+    }
+}
