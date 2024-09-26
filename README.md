@@ -1,6 +1,7 @@
 # token-pokemon-dio-
 
 Atividade realizada com a plataforma DIO. 
+A atividade consiste em criar um token NFT (ERC-721) que possibilite "batalhas" de Pokemons através de transações de Ethereum. 
 
 Para a seguinte atividade, foram utilizadas as plataformas: Remix IDE, Ganache e Metamask.
 
